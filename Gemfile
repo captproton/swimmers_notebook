@@ -48,6 +48,7 @@ group :development, :test do
   gem "rr", "~> 1.1.2"
   gem 'activerecord-nulldb-adapter'
   gem 'database_cleaner'
+  gem 'rb-readline', '~> 0.5.1'
 end
 
 # Use ActiveModel has_secure_password
