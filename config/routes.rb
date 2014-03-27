@@ -1,4 +1,5 @@
 SwimmersNotebook::Application.routes.draw do
+  get "efforts/new"
   get "notebook/index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -14,7 +15,7 @@ SwimmersNotebook::Application.routes.draw do
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-
+  resources :efforts
   # Example resource route with options:
   #   resources :products do
   #     member do

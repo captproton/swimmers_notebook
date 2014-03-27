@@ -6,12 +6,26 @@
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
-
-<div class="container">
-	<div class="content 6 columns offset-by-one">
-		<%= yield %>
-	</div>
-</div>
-</body>
+  <body>
+    <div class="container">
+      <div class="banner sixteen columns clearfix">
+	<% if flash[:notice] %>
+	<p class="notice"><%= flash[:notice] %></p>
+	<% end %>
+	<% if flash[:error] %>
+	<p class="error"><%= flash[:error] %></p>
+	<% end %>
+      </div>
+      <div class="sidebar one columns">
+	<nav>
+	  <ul>
+	    <li><%= link_to "New effort...", new_effort_path %></li>
+	  </ul>
+	</nav>
+      </div>
+      <div class="content ten columns">
+	<%= yield %>
+      </div>
+    </div>
+  </body>
 </html>
