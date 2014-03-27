@@ -15,7 +15,7 @@ class EffortsController < ApplicationController
   private
   
   def effort_params
-    params.require(:effort).permit(:name, :age)
+    params.require(:effort).permit(:name, :age, :pubdate)
   end
   
 end

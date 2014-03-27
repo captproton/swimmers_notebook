@@ -14,6 +14,10 @@ class Notebook
     "Swim Meet times with context"
   end
   
+  def entries
+    @entries.sort_by{|e| e.pubdate}.reverse.take(10)
+  end
+  
   def new_effort(*args)
     effort_maker.call(*args).tap do |e|
       e.notebook = self
@@ -21,7 +25,7 @@ class Notebook
   end
   
   def add_entry(entry)
-    entries << entry
+    @entries << entry
   end
   
   private

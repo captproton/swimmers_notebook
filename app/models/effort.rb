@@ -2,7 +2,7 @@ class Effort
   extend ActiveModel::Naming
   include ActiveModel::Conversion
   
-  attr_accessor :notebook, :name, :age
+  attr_accessor :notebook, :name, :age, :pubdate
   
   def initialize(attrs={})
     attrs.each do |k, v|
@@ -15,7 +15,8 @@ class Effort
     false
   end
   
-  def publish
+  def publish(clock=DateTime)
+    self.pubdate = clock.now
     notebook.add_entry(self)
   end
 end
