@@ -1,5 +1,7 @@
 class Notebook
   attr_reader :entries
+  attr_writer :effort_maker
+  
   def initialize
     @entries = []
   end
@@ -12,4 +14,19 @@ class Notebook
     "Swim Meet times with context"
   end
   
+  def new_effort(*args)
+    effort_maker.call(*args).tap do |e|
+      e.notebook = self
+    end
+  end
+  
+  def add_entry(entry)
+    entries << entry
+  end
+  
+  private
+  
+  def effort_maker
+    @effort_maker ||= Effort.method(:new)
+  end
 end
