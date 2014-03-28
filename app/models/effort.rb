@@ -1,23 +1,15 @@
-class Effort
-  extend ActiveModel::Naming
-  include ActiveModel::Conversion
+require 'date'
+require 'active_record'
+
+class Effort < ActiveRecord::Base
+  validates :name, presence: true  
+  attr_accessor :notebook
   
-  attr_accessor :notebook, :name, :age, :pubdate
-  
-  def initialize(attrs={})
-    attrs.each do |k, v|
-      send("#{k}=", v)
-    end
-    
-  end
-  
-  def persisted?
-    false
-  end
   
   def publish(clock=DateTime)
+    # return false unless valid?
     self.pubdate = clock.now
-    notebook.add_entry(self)
+    @notebook.add_entry(self)
   end
 end
 

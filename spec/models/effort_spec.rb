@@ -72,7 +72,7 @@ describe Effort do
       end
 
       it "should be a datetime" do
-        @it.pubdate.class.must_equal(DateTime)
+        @it.pubdate.class.must_equal(ActiveSupport::TimeWithZone)
       end
 
       it "should be the current time" do

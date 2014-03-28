@@ -1,9 +1,9 @@
 class Notebook
   attr_reader :entries
   attr_writer :effort_maker
-  
-  def initialize
-    @entries = []
+
+  def initialize(entry_fetcher=Effort.method(:all))
+    @entry_fetcher = entry_fetcher
   end
   
   def title
@@ -15,7 +15,7 @@ class Notebook
   end
   
   def entries
-    @entries.sort_by{|e| e.pubdate}.reverse.take(10)
+    fetch_entries.sort_by{|e| e.pubdate}.reverse.take(10)
   end
   
   def new_effort(*args)
@@ -25,11 +25,14 @@ class Notebook
   end
   
   def add_entry(entry)
-    @entries << entry
+    entry.save
   end
   
   private
-  
+
+  def fetch_entries
+    @entry_fetcher.()
+  end
   def effort_maker
     @effort_maker ||= Effort.method(:new)
   end
