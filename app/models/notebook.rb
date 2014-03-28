@@ -15,7 +15,7 @@ class Notebook
   end
   
   def entries
-    fetch_entries.sort_by{|e| e.pubdate}.reverse.take(10)
+    fetch_entries
   end
   
   def new_effort(*args)
