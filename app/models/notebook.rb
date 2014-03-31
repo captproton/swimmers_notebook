@@ -2,7 +2,7 @@ class Notebook
   attr_reader :entries
   attr_writer :effort_maker
 
-  def initialize(entry_fetcher=Effort.method(:all))
+  def initialize(entry_fetcher=Effort.public_method(:most_recent))
     @entry_fetcher = entry_fetcher
   end
   
@@ -15,7 +15,7 @@ class Notebook
   end
   
   def entries
-    fetch_entries.sort_by{|e| e.pubdate}.reverse.take(10)
+    fetch_entries
   end
   
   def new_effort(*args)
