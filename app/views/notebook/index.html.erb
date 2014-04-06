@@ -1,0 +1,8 @@
+<div class="header">
+	<h1><%= @notebook.title %></h1>
+	<h2><%= @notebook.subtitle %></h2>
+  
+</div>
+
+
+<%= render :partial => "entry", collection: @notebook.entries %>

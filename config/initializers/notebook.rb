@@ -1,0 +1,1 @@
+THE_NOTEBOOK = Notebook.new
