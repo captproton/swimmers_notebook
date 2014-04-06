@@ -1,7 +1,8 @@
-<h1>Notebook#index</h1>
-<p>Find me in app/views/notebook/index.html.erb</p>
+<div class="header">
+	<h1><%= @notebook.title %></h1>
+	<h2><%= @notebook.subtitle %></h2>
+  
+</div>
 
-<h1><%= @notebook.title %></h1>
-<h2><%= @notebook.subtitle %></h2>
 
 <%= render :partial => "entry", collection: @notebook.entries %>
