@@ -1,4 +1,8 @@
 SwimmersNotebook::Application.routes.draw do
+  get "events/index"
+  get "events/show"
+  get "swimmers/index"
+  get "swimmers/show"
   get "efforts/new"
   get "notebook/index"
   # The priority is based upon order of creation: first created -> highest priority.
@@ -16,6 +20,7 @@ SwimmersNotebook::Application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
   resources :efforts
+  resources :swimmers, :events
   # Example resource route with options:
   #   resources :products do
   #     member do

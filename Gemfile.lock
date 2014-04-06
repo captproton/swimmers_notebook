@@ -48,6 +48,9 @@ GEM
     erubis (2.7.0)
     execjs (2.0.2)
     ffi (1.9.3)
+    fontawesome-rails (4.0.3.0)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
     formatador (0.2.4)
     guard (2.6.0)
       formatador (>= 0.2.4)
@@ -165,6 +168,7 @@ DEPENDENCIES
   activerecord-nulldb-adapter
   coffee-rails (~> 4.0.0)
   database_cleaner
+  fontawesome-rails (~> 4.0.3.0)
   guard
   guard-bundler (~> 2.0.0)
   guard-minitest
