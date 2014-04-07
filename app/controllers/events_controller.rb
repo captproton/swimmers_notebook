@@ -3,6 +3,6 @@ class EventsController < ApplicationController
   end
 
   def show
-    render layout: false
+    # render layout: false
   end
 end
