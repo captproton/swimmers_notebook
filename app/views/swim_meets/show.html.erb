@@ -1,0 +1,41 @@
+<p>
+  <strong>Title:</strong>
+  <%= @swim_meet.title %>
+</p>
+
+<p>
+  <strong>Started on:</strong>
+  <%= @swim_meet.started_on %>
+</p>
+
+<p>
+  <strong>Finished on:</strong>
+  <%= @swim_meet.finished_on %>
+</p>
+
+<p>
+  <strong>Courses:</strong>
+  <%= @swim_meet.courses %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @swim_meet.location %>
+</p>
+
+<p>
+  <strong>Location URL:</strong>
+  <%= link_to @swim_meet.location_url, @swim_meet.location_url %>
+</p>
+
+<p>
+  <strong>Results url:</strong>
+  <%= link_to @swim_meet.results_url, @swim_meet.results_url %>
+</p>
+
+<%= link_to edit_swim_meet_path(@swim_meet) do %>
+	<i class="fa fa-edit"></i>&nbsp;Edit
+<% end %> |
+<%= link_to swim_meets_path do %>
+	<i class="fa fa-backward"></i>&nbsp;Back
+<% end %>

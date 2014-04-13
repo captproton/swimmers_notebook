@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140327231738) do
+ActiveRecord::Schema.define(version: 20140407023204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,28 @@ ActiveRecord::Schema.define(version: 20140327231738) do
     t.string   "name"
     t.string   "age"
     t.datetime "pubdate"
+  end
+
+  create_table "events", force: true do |t|
+    t.string   "title"
+    t.text     "results_url"
+    t.text     "raw_text"
+    t.json     "json_data",    default: {}, null: false
+    t.integer  "swim_meet_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "swim_meets", force: true do |t|
+    t.string   "title"
+    t.datetime "started_on"
+    t.datetime "finished_on"
+    t.string   "courses"
+    t.string   "location"
+    t.text     "location_url"
+    t.text     "results_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

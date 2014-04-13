@@ -1,0 +1,38 @@
+<h1>Swim Meets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Started on</th>
+      <th>Finished on</th>
+      <th>Courses</th>
+      <th>Location</th>
+      <th>Results url</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @swim_meets.each do |swim_meet| %>
+      <tr>
+        <td><%= link_to swim_meet.title, swim_meet %></td>
+        <td><%= swim_meet.started_on %></td>
+        <td><%= swim_meet.finished_on %></td>
+        <td><%= swim_meet.courses %></td>
+        <td><%= link_to swim_meet.location, swim_meet.location_url %></td>
+        <td><%= link_to "Meet Results", swim_meet.results_url %></td>
+        <td><%= link_to 'Edit', edit_swim_meet_path(swim_meet) %></td>
+        <td><%= link_to 'Destroy', swim_meet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<br>
+
+<%= link_to new_swim_meet_path do %>
+	<i class="fa fa-plus-square"></i>&nbsp;New Swim meet
+<% end %>

@@ -1,0 +1,45 @@
+<%= form_for(@swim_meet) do |f| %>
+  <% if @swim_meet.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@swim_meet.errors.count, "error") %> prohibited this swim meet from being saved:</h2>
+
+      <ul>
+      <% @swim_meet.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, size: 40 %>
+  </div>
+  <div class="field">
+    <%= f.label :started_on %><br>
+    <%= f.datetime_select :started_on %>
+  </div>
+  <div class="field">
+    <%= f.label :finished_on %><br>
+    <%= f.datetime_select :finished_on %>
+  </div>
+  <div class="field">
+    <%= f.label :courses %><br>
+    <%= f.text_field :courses %>
+  </div>
+  <div class="field">
+    <%= f.label :location %><br>
+    <%= f.text_field :location %>
+  </div>
+  <div class="field">
+    <%= f.label :location_url%><br>
+    <%= f.text_field :location_url, size: 55 %>
+  </div>
+  <div class="field">
+    <%= f.label :results_url %><br>
+    <%= f.text_field :results_url, size: 55 %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
