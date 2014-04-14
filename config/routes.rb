@@ -3,8 +3,6 @@ SwimmersNotebook::Application.routes.draw do
 
   resources :swim_meets
 
-  get "events/index"
-  get "events/show"
   get "swimmers/index"
   get "swimmers/show"
   get "efforts/new"

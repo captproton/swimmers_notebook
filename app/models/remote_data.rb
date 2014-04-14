@@ -9,7 +9,10 @@ class RemoteData
   def title
     "Collecting Swim Data"
   end
-  
+
+  def entries
+    @entries.sort_by{ |e| e.pubdate.reverse.take(10)}
+  end
   def new_event(*args)
     event_maker.call(*args).tap do |e|
       e.remote_data = self
@@ -17,7 +20,7 @@ class RemoteData
   end
   
   def add_entry(entry)
-    entries << entry
+    @entries << entry
   end
   
   private

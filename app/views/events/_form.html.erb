@@ -1,35 +1,35 @@
 <%= form_for(@event) do |f| %>
-  <% if @event.errors.any? %>
+  <%# if @event.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+      <h2><%# pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
 
       <ul>
-      <% @event.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+      <%# @event.errors.full_messages.each do |msg| %>
+        <li><%# msg %></li>
+      <%# end %>
       </ul>
     </div>
-  <% end %>
+  <%# end %>
 
   <div class="field">
     <%= f.label :title %><br>
     <%= f.text_field :title %>
   </div>
   <div class="field">
-    <%= f.label :swim_meet_id %><br>
-	<%= collection_select(:event, :swim_meet_id, SwimMeet.load, :id, :title) %>
+    <%# f.label :swim_meet_id %><br>
+	<%# collection_select(:event, :swim_meet_id, SwimMeet.load, :id, :title) %>
   </div>
   <div class="field">
-    <%= f.label :results_url %><br>
-    <%= f.text_area :results_url %>
+    <%# f.label :results_url %><br>
+    <%# f.text_area :results_url %>
   </div>
   <div class="field">
     <%= f.label :raw_text %><br>
     <%= f.text_area :raw_text %>
   </div>
   <div class="field">
-    <%= f.label :json_data %><br>
-    <%= f.text_field :json_data %>
+    <%# f.label :json_data %><br>
+    <%# f.text_field :json_data %>
   </div>
   <div class="actions">
     <%= f.submit %>
