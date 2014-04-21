@@ -1,0 +1,1 @@
+THE_REMOTE_DATA = RemoteData.new

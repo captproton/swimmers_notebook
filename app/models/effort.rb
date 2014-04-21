@@ -6,7 +6,9 @@ class Effort < ActiveRecord::Base
   attr_accessor :notebook
   
   def self.most_recent(limit=10)
-    all(order: "pubdate DESC", limit: limit)
+    # all(order: "pubdate DESC", limit: limit)
+    order("pubdate DESC").limit(limit)
+    
   end
   
   def publish(clock=DateTime)

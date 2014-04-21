@@ -89,10 +89,13 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.25.1)
+    mini_portile (0.5.3)
     minitest (4.7.5)
     multi_json (1.9.2)
     multi_xml (0.5.5)
     nio4r (1.0.0)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
     passenger (4.0.40)
       daemon_controller (>= 1.2.0)
       rack
@@ -177,6 +180,7 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-rails
   minitest
+  nokogiri (~> 1.6.1)
   passenger
   pg
   rails (= 4.0.4)

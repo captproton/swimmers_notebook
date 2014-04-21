@@ -1,6 +1,8 @@
 SwimmersNotebook::Application.routes.draw do
-  get "events/index"
-  get "events/show"
+  resources :events
+
+  resources :swim_meets
+
   get "swimmers/index"
   get "swimmers/show"
   get "efforts/new"
