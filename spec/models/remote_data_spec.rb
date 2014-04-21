@@ -2,16 +2,15 @@ require_relative '../spec_helper_lite'
 require_relative '../../app/models/remote_data'
 require 'ostruct'
 
-
 describe RemoteData do
   before do
-    @it = RemoteData.new
+    @entries = []
+    @it = RemoteData.new(->{@entries})
   end
-  
+
   it "should have no entries" do
     @it.entries.must_be_empty
   end
-  
 
   describe "#new_entry" do
     before do
@@ -39,6 +38,7 @@ describe RemoteData do
   describe "#add_entry" do
     it "should add the entry to the remote_data" do
       entry = stub!
+      mock(entry).save
       @it.add_entry(entry)
       @it.entries.must_include(entry)
     end
@@ -70,5 +70,4 @@ describe RemoteData do
       @it.entries.wont_include(oldest)
     end
   end
-  
 end

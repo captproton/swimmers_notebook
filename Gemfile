@@ -50,7 +50,7 @@ group :development, :test do
   gem 'guard-minitest'
   gem 'guard-passenger'
   gem "guard-bundler", "~> 2.0.0"
-  gem "rr", "~> 1.1.2"
+  gem "rr", "~> 1.1.2", require: false
   gem 'activerecord-nulldb-adapter'
   gem 'database_cleaner'
   gem 'rb-readline', '~> 0.5.1'
