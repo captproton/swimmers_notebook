@@ -179,6 +179,10 @@ class Harvester
     end
   end
   
+  
+  
+  private
+
   def fetch_page(page_url)
     response = HTTParty.get(page_url)
     
@@ -189,9 +193,6 @@ class Harvester
     
     return response    
   end
-  
-  
-  private
 
   def create_swim_meet_obj(row, meet_seq_no)
     swim_meet_obj = {
