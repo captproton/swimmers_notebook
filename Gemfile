@@ -45,6 +45,9 @@ gem "httparty", "~> 0.13.0"
 # and rake tasks are available in development mode:
 group :development, :test do
   gem 'minitest'
+  gem 'rspec-rails', '~> 2.14.2'
+  gem 'rspec-expectations', '~> 2.14.5'
+  gem 'guard-rspec', '~> 4.2.9', require: false
   gem 'passenger'
   gem 'guard'
   gem 'guard-minitest'

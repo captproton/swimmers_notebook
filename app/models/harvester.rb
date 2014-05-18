@@ -1,14 +1,16 @@
-require'json'
-require'nokogiri'
-require'open-uri'
-require'active_support/all'
+require 'json'
+require 'nokogiri'
+require 'open-uri'
+require 'active_support/all'
+require 'httparty'
 
 class Harvester
   
   attr_reader :entries
-  attr_writer :event_maker
   attr_accessor :notebook
   
+  include HTTParty
+  # base_uri "http://www.swimconnection.com"
   
   def initialize
     @entries = []
@@ -129,33 +131,25 @@ class Harvester
   
   def list_of_swim_meets
     page_url = "http://www.swimconnection.com/pc/exec/Meets"
-    
-    # Get the body of text within the tag we want and create an array of lines from that text.
-    page=Nokogiri::HTML(open(page_url))
-    # rows = page.css('table tr td table tr')[6].text # first row of the links
-    rows = page.css('table tr td table tr')
-    
     @swim_meets = []
+    
+    response = fetch_page(page_url)
+    
+
+    return @swim_meets = [] if response.blank?
+    # Get the body of text within the tag we want and create an array of swim meet details from that text.
+    rows = Nokogiri::HTML(response).css('table tr td table tr')    
     
     rows.each do |row|
   
       anchor = Array(row.css('td:nth-child(2) a'))
+      # parse link for details of meet
       if Array(anchor).length > 0
         link =  row.css('td:nth-child(2) a').attribute('href').value
         link_params = CGI::parse(link)
-        meet_seq_no = link_params['/pc/exec/MeetResultsDispatch?meetSeqNo']
+        meet_seq_no = link_params['/pc/exec/MeetResultsDispatch?meetSeqNo'].first.to_s
         
-        swim_meet_obj = {
-          :date => row.css('td:nth-child(1)').text.strip!,
-          :name => row.css('td:nth-child(2) a').text,
-          # :link => link,
-          :link => link,
-          :meet_seq_no => meet_seq_no.first.to_s,
-          # :link => row.css('td:nth-child(2) a').attribute('href').value,
-          :course => row.css('td:nth-child(3)').text.strip!,
-          :location => row.css('td:nth-child(4)').text.strip!
-        }
-        puts "#{swim_meet_obj[:name]} occured at #{swim_meet_obj[:location]}," #" see #{swim_meet_obj[:link]}."
+        swim_meet_obj = create_swim_meet_obj(row, meet_seq_no)
       
         @swim_meets << swim_meet_obj unless meet_seq_no.blank?
       end
@@ -185,7 +179,31 @@ class Harvester
     end
   end
   
+  def fetch_page(page_url)
+    response = HTTParty.get(page_url)
+    
+    if response.code != 200
+      puts "Error #{response.code}: #{response.message}"
+      response = ""
+    end
+    
+    return response    
+  end
+  
+  
   private
+
+  def create_swim_meet_obj(row, meet_seq_no)
+    swim_meet_obj = {
+      :date => row.css('td:nth-child(1)').text.strip!,
+      :name => row.css('td:nth-child(2) a').text,
+      :link => row.css('td:nth-child(2) a').attribute('href').value,
+      :meet_seq_no => meet_seq_no,
+      :course => row.css('td:nth-child(3)').text.strip!,
+      :location => row.css('td:nth-child(4)').text.strip!
+    }
+    
+  end
     
   def text_to_milliseconds(time_in_text)
     string = Array(time_in_text).first.to_s

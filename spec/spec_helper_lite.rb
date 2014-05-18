@@ -5,7 +5,7 @@ require 'rr'
 require 'ostruct'
 
 class MiniTest::Unit::TestCase
-  include RR::Adapters::MiniTest ## RR deprecation warning: RR now has an autohook system. You don't need to `include RR::Adapters::*` in your test framework's base class anymore.
+  # include RR::Adapters::MiniTest ## RR deprecation warning: RR now has an autohook system. You don't need to `include RR::Adapters::*` in your test framework's base class anymore.
 end
 
 def stub_module(full_name, &block)
