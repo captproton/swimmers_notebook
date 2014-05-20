@@ -30,7 +30,7 @@ class Harvester
     swim_meet_params = {swimconnection_com_id: Array(swimconnection_com_meet_id).first.to_s}
     @parent_swim_meet = SwimMeet.where(swim_meet_params).first_or_create
     
-    #return ID's of the parents
+    #return database ID's of the parents
     @parents= {event_id: @parent_event.id, swim_meet_id: @parent_swim_meet.id}
     
   end
@@ -226,6 +226,8 @@ class Harvester
     
     #collect details about event
     page_url = "http://www.swimconnection.com/pc/exec/MeetResultsRightEventDispatch?meetSeqNo=#{swimconnection_com_meet_id}&round=-1&eventInfo=#{swimconnection_com_swim_meet_event_id}"
+    
+    
     response = HTTParty.get(page_url)
     
     if response.code != 200
