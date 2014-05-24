@@ -66,10 +66,25 @@ describe Harvester do
       subject.should be_an Array
     end
     
-    it "has a size of 132 events" do
+    it "has a size of 5 events" do
       subject.size.should be 5
     end
 
+  end
+  
+  
+  describe "#swimconnection_event_details" do
+    subject { Harvester.new.swimconnection_event_details("2823", "M000822") }
+    
+    it "works" do
+      subject.should include(:title=>"BOYS 8 UNDER - 100 IM", :results_url=>"http://www.swimconnection.com/pc/exec/MeetResultsRightEventDispatch?meetSeqNo=2823&round=-1&eventInfo=M000822", 
+      :parent_swim_meet_title=>"REDWOOD EMPIRE SWIM LEAGUE \u0095 25Y")
+    end
+    
+    it "has a size of 3 events" do
+      subject.size.should be 3
+    end
+    
   end
   
 end

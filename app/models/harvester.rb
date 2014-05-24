@@ -87,7 +87,7 @@ class Harvester
   
   def list_of_swim_meets
     page_url = "http://www.swimconnection.com/pc/exec/Meets"
-    @swim_meets = []
+    swim_meets = []
     
     response = fetch_page(page_url)
     
@@ -107,10 +107,10 @@ class Harvester
         
         swim_meet_obj = create_swim_meet_obj(row, meet_seq_no)
       
-        @swim_meets << swim_meet_obj unless meet_seq_no.blank?
+        swim_meets << swim_meet_obj unless meet_seq_no.blank?
       end
     end
-    @swim_meets
+    swim_meets
   end
   
   def update_local_list_of_swim_meets
@@ -135,6 +135,33 @@ class Harvester
     end
   end
   
+  def swimconnection_event_details(swimconnection_com_meet_id, swimconnection_com_swim_meet_event_id)
+    swimconnection_com_swim_meet_event_id = Array(swimconnection_com_swim_meet_event_id).first.to_s
+    swimconnection_com_meet_id = Array(swimconnection_com_meet_id).first.to_s
+    @event = {} #initialize event that will be returned
+    
+    #collect details about event
+    page_url = "http://www.swimconnection.com/pc/exec/MeetResultsRightEventDispatch?meetSeqNo=#{swimconnection_com_meet_id}&round=-1&eventInfo=#{swimconnection_com_swim_meet_event_id}"
+    
+    response = fetch_page(page_url)
+    # response = HTTParty.get(page_url)
+    # 
+    # if response.code != 200
+    #   puts "page currently not available"
+    #   return @event
+    # end
+    
+    # Get the body of text within the tag we want and create a title from that text.
+    page=Nokogiri::HTML(response)
+    
+    parent_swim_meet_title = page.css('table').first.css("table").css("td.subtitle").text.strip!
+    
+    event_details =  page.css('table').first.css("table").css("td.hilite").text.strip!.split("\r\n").each {|e| e.strip!}
+
+    title  = "#{event_details[0]} #{event_details[1]} - #{event_details[3]} #{event_details[4]}"
+    
+    @event = {title: title, results_url: page_url, parent_swim_meet_title: parent_swim_meet_title}
+  end
   
   
   private
@@ -175,33 +202,6 @@ class Harvester
     milliseconds = ((hrs*3600 + min*60 + sec) * 1000).to_i
   end
 
-  def swimconnection_event_details(swimconnection_com_meet_id, swimconnection_com_swim_meet_event_id)
-    swimconnection_com_swim_meet_event_id = Array(swimconnection_com_swim_meet_event_id).first.to_s
-    swimconnection_com_meet_id = Array(swimconnection_com_meet_id).first.to_s
-    @event = {} #initialize event that will be returned
-    
-    #collect details about event
-    page_url = "http://www.swimconnection.com/pc/exec/MeetResultsRightEventDispatch?meetSeqNo=#{swimconnection_com_meet_id}&round=-1&eventInfo=#{swimconnection_com_swim_meet_event_id}"
-    
-    
-    response = HTTParty.get(page_url)
-    
-    if response.code != 200
-      puts "page currently not available"
-      return @event
-    end
-    
-    # Get the body of text within the tag we want and create a title from that text.
-    page=Nokogiri::HTML(response)
-    
-    parent_swim_meet_title = page.css('table').first.css("table").css("td.subtitle").text.strip!
-    
-    event_details =  page.css('table').first.css("table").css("td.hilite").text.strip!.split("\r\n").each {|e| e.strip!}
-
-    title  = "#{event_details[0]} #{event_details[1]} - #{event_details[3]} #{event_details[4]}"
-    
-    @event = {title: title, results_url: page_url, parent_swim_meet_title: parent_swim_meet_title}
-  end
 
 
 end
