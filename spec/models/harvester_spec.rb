@@ -53,6 +53,18 @@ describe Harvester do
     end
   end
   
+  require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+  
+  describe "#list_of_event_efforts" do
+    subject { Harvester.new.list_of_event_efforts("2823", "M000822") }
+    
+    it 'works' do
+      subject.should =~ [ 4, 2, 3 ]
+    end
+    
+    
+  end
+  
 end
 
 
