@@ -7,11 +7,13 @@ class SwimConnectionScraper
   
   attr_reader :response
   
-  def initialize
+  def initialize(response)
     @response = response
-  end
+  end  
   
   def scrape_event_index
+    swim_meet_events = []
+    
     # Get the body of text within the javascript tag we want and create an array of lines from that text.
     page=Nokogiri::HTML(response.body)
     string = page.css('head').css('script').last.content
@@ -22,13 +24,13 @@ class SwimConnectionScraper
     index_of_start_of_function = lines.each_index.select{|i| lines[i] =~ /function updateCurrent/}.first
     index_of_end_of_function = (lines.each_index.select{|i| lines[i] =~ /function getIndex/}).first - 1
     lines_of_function = lines[index_of_start_of_function, index_of_end_of_function]
-
+    
     lines_of_function.each do |element|
       id = element.match(/'\w+'/).to_s.gsub!("'","")
       swim_meet_events << id if id != nil
     end
     
-    
+    return swim_meet_events
   end
   
 end
