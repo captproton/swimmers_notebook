@@ -59,7 +59,7 @@ describe Harvester do
     subject { Harvester.new.list_of_event_efforts("2823", "M000822") }
     
     it 'works' do
-      subject.should =~ [ 4, 2, 3 ]
+      subject.should =~ [{:rank=>1, :name=>" LOMVARDAS, AKIRA T", :age=>8, :team=>" PC\u0095NBA ", :final_time=>85800, :standard=>"PRT", :swimconnection_com_swim_meet_event_id=>"M000822", :swimconnection_com_meet_id=>"2823"}, {:rank=>2, :name=>" LARSEN, MATTHEW E", :age=>8, :team=>" PC\u0095NVST ", :final_time=>105880, :standard=>"A", :swimconnection_com_swim_meet_event_id=>"M000822", :swimconnection_com_meet_id=>"2823"}, {:rank=>3, :name=>" ABRAHAMSON, MOSES J", :age=>8, :team=>" PC\u0095BBR ", :final_time=>106440, :standard=>"A", :swimconnection_com_swim_meet_event_id=>"M000822", :swimconnection_com_meet_id=>"2823"}, {:rank=>4, :name=>" MANALANG, JENALD C", :age=>8, :team=>" PC\u0095ECG ", :final_time=>110509, :standard=>"B", :swimconnection_com_swim_meet_event_id=>"M000822", :swimconnection_com_meet_id=>"2823"}, {:rank=>5, :name=>" WATSON, DERIN A", :age=>8, :team=>" PC\u0095MONT ", :final_time=>0, :standard=>"", :swimconnection_com_swim_meet_event_id=>"M000822", :swimconnection_com_meet_id=>"2823"}]
     end
     
     
