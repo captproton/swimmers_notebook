@@ -71,7 +71,9 @@ class Harvester
     swimconnection_com_meet_id = Array(swimconnection_com_meet_id).first.to_s
     page_url = "http://www.swimconnection.com/pc/exec/MeetResultsRightEventDispatch?meetSeqNo=#{swimconnection_com_meet_id}&round=-1&eventInfo=#{swimconnection_com_swim_meet_event_id}"
     
+    efforts = {}
     response = fetch_page(page_url)
+    return efforts if response.blank?
 
     efforts = SwimConnectionScraper.new(response).convert_event_efforts_table_into_an_array
     
