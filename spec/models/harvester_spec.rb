@@ -22,8 +22,8 @@ describe Harvester do
       # expect(subject).to be_nil
     
     end
-    it "#list_of_swim_meets should return less than 300 swim meets" do
-      subject.size.should be < 300    
+    it "#list_of_swim_meets should return less than 325 swim meets" do
+      subject.size.should be < 325
     end
     it "the last meet in #list_of_swim_meets should have a meet_seq_no equal to 2823" do
       expect(subject.last[:meet_seq_no]).to eq("2823")
@@ -42,6 +42,10 @@ describe Harvester do
     
     it "has a size greater than 10 events" do
       subject.size.should be > 10
+    end
+    
+    it "has a size of 132 events" do
+      subject.size.should be 132
     end
     
     it "has a last item equal to 'M000822'" do

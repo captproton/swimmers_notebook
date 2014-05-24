@@ -4,6 +4,8 @@ require 'open-uri'
 require 'active_support/all'
 require 'httparty'
 
+require_relative './swim_connection_scraper.rb'
+
 class Harvester
   
   attr_reader :entries
@@ -53,33 +55,32 @@ class Harvester
 
   def list_of_swim_meet_events(swimconnection_com_meet_id)
     swimconnection_com_meet_id = Array(swimconnection_com_meet_id).first
-    @swim_meet_events = []
+    swim_meet_events = []
     page_url = "http://www.swimconnection.com/pc/sa/meets/meet_#{swimconnection_com_meet_id}/eventsAgeEvent.html"
     
-    response = HTTParty.get(page_url)
+    response = fetch_page(page_url)
+
+    swim_connection = SwimConnectionScraper.new
+    # swim_meet_events = swim_connection.scrape_event_index(response)
     
-    if response.code != 200
-      puts "page currently not available"
-      return @swim_meet_events = []
-    end
-    # Get the body of text within the tag we want and create an array of lines from that text.
+    # Get the body of text within the javascript tag we want and create an array of lines from that text.
     page=Nokogiri::HTML(response.body)
     string = page.css('head').css('script').last.content
     lines = string.lines
     
-    # Now, whittle down the array to the desired elements within the getCurrent() function
+    # Now, whittle down the array to the desired elements within the javascript getCurrent() function of the fetched page
     # and insert it into the @swim_meet_events
     index_of_start_of_function = lines.each_index.select{|i| lines[i] =~ /function updateCurrent/}.first
     index_of_end_of_function = (lines.each_index.select{|i| lines[i] =~ /function getIndex/}).first - 1
-    @lines_of_function = lines[index_of_start_of_function, index_of_end_of_function]
+    lines_of_function = lines[index_of_start_of_function, index_of_end_of_function]
 
-    @lines_of_function.each do |element|
+    lines_of_function.each do |element|
       id = element.match(/'\w+'/).to_s.gsub!("'","")
-      @swim_meet_events << id if id != nil
+      swim_meet_events << id if id != nil
     end
 
-    puts "There are currently #{@swim_meet_events.size} listed"
-    return @swim_meet_events
+    
+    return swim_meet_events
   end
   
   def list_of_event_efforts(swimconnection_com_meet_id, swimconnection_com_swim_meet_event_id)
