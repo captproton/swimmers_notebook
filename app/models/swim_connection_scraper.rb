@@ -34,4 +34,32 @@ class SwimConnectionScraper
     return swim_meet_events
   end
   
+  def convert_event_efforts_table_into_an_array
+    efforts =[]
+    
+    page=Nokogiri::HTML(response)
+    table =  page.css('table').last
+    rows = table.css('tr').select{|row| row['bgcolor'] == '#ffffff'}
+    
+    rows.each do |row|
+      rank = row.css('td:nth-child(1)').text.strip!
+      rank = Array(rank).first.to_i 
+      age = row.css('td:nth-child(3)').text.strip!
+      age = Array(age).first.to_i
+      
+      final_time = row.css('td:nth-child(5)').text.strip!
+      # final_time = text_to_milliseconds(final_time)
+      
+      effort_obj = {
+        :rank => rank,# rank given to the time of the swimmer
+        :name =>row.css('td:nth-child(2)').text.strip!,# name (first, last) of the swimmer
+        :age => age,# age of the swimmer
+        :team =>row.css('td:nth-child(4)').text.strip!,# swimmer's swim team
+        :final_time =>final_time,# the swimmer's time for the event
+        :standard =>row.css('td:nth-child(6)').text.strip! # category of the effort        
+      }     
+      efforts << effort_obj
+    end
+    efforts
+  end
 end

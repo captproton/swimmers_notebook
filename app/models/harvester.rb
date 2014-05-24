@@ -69,47 +69,19 @@ class Harvester
     swimconnection_com_meet_id = Array(swimconnection_com_meet_id).first.to_s
     page_url = "http://www.swimconnection.com/pc/exec/MeetResultsRightEventDispatch?meetSeqNo=#{swimconnection_com_meet_id}&round=-1&eventInfo=#{swimconnection_com_swim_meet_event_id}"
     
-    # response = fetch_page(page_url)
-    
-    @efforts =[]
-    response = HTTParty.get(page_url)
-    
-    if response.code != 200
-      puts "page currently not available"
-      return @efforts
-    end
-    
-    # Get the body of text within the tag we want and create an array of lines from that text.
-    page=Nokogiri::HTML(response)
-    table =  page.css('table').last
-    rows = table.css('tr').select{|row| row['bgcolor'] == '#ffffff'}
-    
-    rows.each do |row|
-      rank = row.css('td:nth-child(1)').text.strip!
-      rank = Array(rank).first.to_i 
-      age = row.css('td:nth-child(3)').text.strip!
-      age = Array(age).first.to_i
-      
-      final_time = row.css('td:nth-child(5)').text.strip!
-      final_time = text_to_milliseconds(final_time)
-      
-      effort_obj = {
-        :rank => rank,# rank given to the time of the swimmer
-        :name =>row.css('td:nth-child(2)').text.strip!,# name (first, last) of the swimmer
-        :age => age,# age of the swimmer
-        :team =>row.css('td:nth-child(4)').text.strip!,# swimmer's swim team
-        :final_time =>final_time,# the swimmer's time for the event
-        :standard =>row.css('td:nth-child(6)').text.strip!,# category of the effort
-        :swimconnection_com_swim_meet_event_id => swimconnection_com_swim_meet_event_id,
-        :swimconnection_com_meet_id => swimconnection_com_meet_id
-        
+    response = fetch_page(page_url)
 
-      }      
-      puts "#{effort_obj[:name]}, age #{effort_obj[:age]}, swam #{effort_obj[:rank]} in #{effort_obj[:final_time]} for #{effort_obj[:team]} in the #{effort_obj[swimconnection_com_swim_meet_event_id]} at #{ effort_obj[:swimconnection_com_meet_id]}."
+    efforts = SwimConnectionScraper.new(response).convert_event_efforts_table_into_an_array
     
-      @efforts << effort_obj
+    efforts.each do |effort|
+      final_time = effort[:final_time]
+      final_time = text_to_milliseconds(final_time)
+      effort[:final_time] = final_time
+      effort[:swimconnection_com_swim_meet_event_id ] = swimconnection_com_swim_meet_event_id
+      effort[:swimconnection_com_meet_id ] = swimconnection_com_meet_id
     end
-    @efforts
+    
+    efforts
   end
   
   
