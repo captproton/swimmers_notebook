@@ -172,6 +172,14 @@ class Harvester
     event = {title: title, results_url: page_url, parent_swim_meet_title: parent_swim_meet_title}
   end
   
+  def update_all_swim_meets
+    self.update_local_list_of_swim_meets
+    @swim_meets = SwimMeet.all
+    @swim_meets.each do |meet|
+      puts meet.swimconnection_com_id
+      create_or_update_event_efforts_for_swim_meet(meet.swimconnection_com_id)
+    end
+  end
   
   private
 
