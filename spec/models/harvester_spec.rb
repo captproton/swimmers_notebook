@@ -7,20 +7,9 @@ describe Harvester do
   
   describe "#list_of_swim_meets" do
     subject { Harvester.new.list_of_swim_meets }
- 
-    # it 'works' do
-    #   subject.should =~ [ 4, 2, 3 ]
-    # end
-    
     
     it "#list_of_swim_meets should return more than 290 swim meets" do
-      subject.size.should be > 290 #success!
-      # subject.size.should be < 10
-      # subject.last.should be nil
-      # subject.last[:meet_seq_no].should be '1000'
-      # expect(subject.last[:meet_seq_no]).to eq("2823")
-      # expect(subject).to be_nil
-    
+      subject.size.should be > 290 #success!    
     end
     it "#list_of_swim_meets should return less than 325 swim meets" do
       subject.size.should be < 325
@@ -31,12 +20,9 @@ describe Harvester do
   end
   
   describe "#list_of_swim_meet_events" do
-    # subject { Harvester.new.list_of_swim_meet_events(stub) }
-    # subject { Harvester.new.list_of_swim_meet_events(:swimconnection_com_meet_id => "2823") }​​
     subject { Harvester.new.list_of_swim_meet_events("2823") }
     
     it "is an Array" do
-      # subject.should eq('something')
       subject.should be_an Array
     end
     
@@ -62,7 +48,6 @@ describe Harvester do
     end
     
     it "is an Array" do
-      # subject.should eq('something')
       subject.should be_an Array
     end
     
