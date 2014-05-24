@@ -25,6 +25,7 @@ class SwimConnectionScraper
     index_of_end_of_function = (lines.each_index.select{|i| lines[i] =~ /function getIndex/}).first - 1
     lines_of_function = lines[index_of_start_of_function, index_of_end_of_function]
     
+    # Find ID's of events and add them to an array
     lines_of_function.each do |element|
       id = element.match(/'\w+'/).to_s.gsub!("'","")
       swim_meet_events << id if id != nil
