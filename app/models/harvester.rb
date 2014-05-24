@@ -59,6 +59,8 @@ class Harvester
     page_url = "http://www.swimconnection.com/pc/sa/meets/meet_#{swimconnection_com_meet_id}/eventsAgeEvent.html"
     
     response = fetch_page(page_url)
+    
+    return swim_meet_events if response.blank?
 
     swim_meet_events = SwimConnectionScraper.new(response).scrape_event_index
     
