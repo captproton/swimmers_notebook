@@ -121,10 +121,19 @@ class Harvester
     @swim_connection_com_meets = self.list_of_swim_meets
     
     @swim_connection_com_meets.each do |sc_meet|
-      # SwimMeet(id: integer, title: string, started_on: datetime, finished_on: datetime, courses: string, location: string, location_url: text, results_url: text, created_at: datetime, updated_at: datetime, swimconnection_com_id: string)
-      #  => {:date=>" 2012-07-27 ", :name=>"REDWOOD EMPIRE SWIM LEAGUE", :link=>"/pc/exec/MeetResultsDispatch?meetSeqNo=2823&teamCode=", :meet_seq_no=>"2823", :course=>"25Y", :location=>" EL CERRITO SWIM CENT "} 
-      meet_params = {title: sc_meet[:name], started_on: sc_meet[:date], finished_on: sc_meet[:date], courses: sc_meet[:course], location: sc_meet[:location], location_url: sc_meet[:link], results_url: sc_meet[:link], swimconnection_com_id: sc_meet[:meet_seq_no]}
+      meet_params = {
+        title: sc_meet[:name], 
+        started_on: sc_meet[:date], 
+        finished_on: sc_meet[:date], 
+        courses: sc_meet[:course], 
+        location: sc_meet[:location], 
+        location_url: sc_meet[:link], 
+        results_url: sc_meet[:link], 
+        swimconnection_com_id: sc_meet[:meet_seq_no]
+      }
+
       @meet = SwimMeet.where(swimconnection_com_id: sc_meet[:meet_seq_no])
+
       SwimMeet.create(meet_params) if @meet.count == 0
     end
   end
