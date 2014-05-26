@@ -11,30 +11,9 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>charts3</title>
 	
-		<style> /* set the CSS */
-
-	body { font: 12px Arial;}
-
-	path { 
-	  stroke: steelblue;
-		stroke-width: 2;
-		fill: none;
-	}
-
-	.axis path,
-	.axis line {
-		fill: none;
-		stroke: grey;
-		stroke-width: 1;
-		shape-rendering: crispEdges;
-	}
-
-	</style>
 </head>
 <body>
 	<h1 id="get_it">get it</h1>
-	<div id="area1"></div>
-	<div id="area2"></div>
 	<div id="carlgraph"></div>
 	<div id="event_history_graph"></div>
 
@@ -51,104 +30,6 @@
 
 	<script>
 		YUI().use('d3', 'jquery-ui', 'yql', function (Y) {
-			// Set the dimensions of the canvas / graph
-			var	margin = {top: 30, right: 20, bottom: 30, left: 50},
-				width = 400 - margin.left - margin.right,
-				height = 220 - margin.top - margin.bottom;
-
-			// Parse the date / time
-			var	parseDate = d3.time.format("%d-%b-%y").parse;
-
-			// Set the ranges
-			var	x = d3.time.scale().range([0, width]);
-			var	y = d3.scale.linear().range([height, 0]);
-
-			// Define the axes
-			var	xAxis = d3.svg.axis().scale(x)
-				.orient("bottom").ticks(5);
-
-			var	yAxis = d3.svg.axis().scale(y)
-				.orient("left").ticks(5);
-
-			// Define the line
-			var	valueline = d3.svg.line()
-				.x(function(d) { return x(d.date); })
-				.y(function(d) { return y(d.close); });
-    
-			// Adds the svg canvas
-			var	chart1 = d3.select("#area1")
-				.append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-			// Get the data
-			d3.csv("./data.csv", function(error, data) {
-				data.forEach(function(d) {
-					d.date = parseDate(d.date);
-					d.close = +d.close;
-				});
-
-				// Scale the range of the data
-				x.domain(d3.extent(data, function(d) { return d.date; }));
-				y.domain([0, d3.max(data, function(d) { return d.close; })]);
-
-				// Add the valueline path.
-				chart1.append("path")
-					.attr("class", "line")
-					.attr("d", valueline(data));
-
-				// Add the X Axis
-				chart1.append("g")
-					.attr("class", "x axis")
-					.attr("transform", "translate(0," + height + ")")
-					.call(xAxis);
-
-				// Add the Y Axis
-				chart1.append("g")
-					.attr("class", "y axis")
-					.call(yAxis);
-
-			});
-
-			// Adds the svg canvas
-			var	chart2 = d3.select("#area2")
-				.append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-		
-			// Get the data
-			d3.csv("./data.csv", function(error, data) {
-				data.forEach(function(d) {
-					d.date = parseDate(d.date);
-					d.close = +d.close;
-				});
-
-				// Scale the range of the data
-				x.domain(d3.extent(data, function(d) { return d.date; }));
-				y.domain([0, d3.max(data, function(d) { return d.close; })]);
-
-				// Add the valueline path.
-				chart2.append("path")
-					.attr("class", "line")
-					.attr("d", valueline(data));
-
-				// Add the X Axis
-				chart2.append("g")
-					.attr("class", "x axis")
-					.attr("transform", "translate(0," + height + ")")
-					.call(xAxis);
-
-				// Add the Y Axis
-				chart2.append("g")
-					.attr("class", "y axis")
-					.call(yAxis);
-
-			});
-			
 			// bar graph for carlgraph
 			
 			// basice d3
@@ -505,19 +386,13 @@
       }
 		
 	    Y.YQL(query, function (response) {
-			
-	        var ol = Y.Node.create('<ol/>');
-	        data = response.query.results.quote;
-	        Y.each(data, function (r) {
-	            ol.append('<li>' + r.Symbol + ' &mdash; ' + r.Close + '</li>');
-	        });
-	        Y.one('body').append(ol);
+	        results = response.query.results.quote;
 
-	        for(var i=0;i<data.length;i++){
-	          data[i].timestamp = (new Date(data[i].date).getTime() / 1000);
+	        for(var i=0;i<results.length;i++){
+	          results[i].timestamp = (new Date(results[i].date).getTime() / 1000);
 	        }		  
-	        data = data.sort(function(x, y){ return dateFormat.parse(x.Date).getTime() - dateFormat.parse(y.Date).getTime(); });			
-	        buildChart(data);		  
+	        results = results.sort(function(x, y){ return dateFormat.parse(x.Date).getTime() - dateFormat.parse(y.Date).getTime(); });			
+	        buildChart(results);		  
             
 	    });
 		
