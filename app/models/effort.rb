@@ -5,11 +5,16 @@ class Effort < ActiveRecord::Base
   validates :name, presence: true  
   attr_accessor :notebook
   
+  belongs_to :event
+  belongs_to :swim_meet
+  
   def self.most_recent(limit=10)
-    all(order: "pubdate DESC", limit: limit)
+    # all(order: "pubdate DESC", limit: limit)
+    order("pubdate DESC").limit(limit)
+    
   end
   
-  def publish(clock=DateTime)
+  def publish(clock: DateTime)
     # return false unless valid?
     self.pubdate = clock.now
     @notebook.add_entry(self)

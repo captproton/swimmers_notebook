@@ -21,6 +21,9 @@ gem 'coffee-rails', '~> 4.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
+# Parse source pages for events and efforts
+gem 'nokogiri', '~> 1.6.1'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
@@ -42,12 +45,15 @@ gem "httparty", "~> 0.13.0"
 # and rake tasks are available in development mode:
 group :development, :test do
   gem 'minitest'
+  gem 'rspec-rails', '~> 2.14.2'
+  gem 'rspec-expectations', '~> 2.14.5'
+  gem 'guard-rspec', '~> 4.2.9', require: false
   gem 'passenger'
   gem 'guard'
   gem 'guard-minitest'
   gem 'guard-passenger'
   gem "guard-bundler", "~> 2.0.0"
-  gem "rr", "~> 1.1.2"
+  gem "rr", "~> 1.1.2", require: false
   gem 'activerecord-nulldb-adapter'
   gem 'database_cleaner'
   gem 'rb-readline', '~> 0.5.1'

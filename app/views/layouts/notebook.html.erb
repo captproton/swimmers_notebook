@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="A layout example that shows off a responsive email layout.">
+
+    <title>Email &ndash; Layout Examples &ndash; Pure</title>
+
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure.css">
+
+
+
+  
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="css/layouts/email-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="css/layouts/email.css">
+    <!--<![endif]-->
+  
+
+</head>
+<body>
+	<div id="layout" class="content pure-g">
+    	<div id="nav" class="pure-u">
+        	<a href="#" class="nav-menu-button">Menu</a>
+
+        	<div class="nav-inner">
+				<div id="demo" class="yui3-skin-sam yui3-g" style="font-size: 35%;" > <!-- You need this skin class -->
+					<div id="mycalendar"></div>
+				</div>
+	            <button class="primary-button pure-button">Compose</button>
+
+	            <div class="pure-menu pure-menu-open">
+	                <ul>
+	                    <li><a href="#">Inbox <span class="email-count">(2)</span></a></li>
+	                    <li><a href="#">Important</a></li>
+	                    <li><a href="#">Sent</a></li>
+	                    <li><a href="#">Drafts</a></li>
+	                    <li><a href="#">Trash</a></li>
+	                    <li class="pure-menu-heading">Labels</li>
+	                    <li><a href="#"><span class="email-label-personal"></span>Personal</a></li>
+	                    <li><a href="#"><span class="email-label-work"></span>Work</a></li>
+	                    <li><a href="#"><span class="email-label-travel"></span>Travel</a></li>
+	                </ul>
+	            </div>
+			</div>
+    	</div>
+
+		<%= yield %>
+	</div>
+
+	<!-- YUI seed script -->
+	<script src="http://yui.yahooapis.com/3.14.1/build/yui/yui.js" type="text/javascript"></script>
+	<!-- app loader configuration script -->
+	<script src="/javascripts/yui_config.js" type="text/javascript"></script>
+
+
+	<script>
+	    YUI().use('node-base', 'node-event-delegate', function (Y) {
+
+	        var menuButton = Y.one('.nav-menu-button'),
+	            nav        = Y.one('#nav');
+
+	        // Setting the active class name expands the menu vertically on small screens.
+	        menuButton.on('click', function (e) {
+	            nav.toggleClass('active');
+	        });
+
+	        // Your application code goes here...
+		
+
+	    });
+	</script>
+	<script>
+		YUI().use('node-base', 'node-event-delegate', function (Y) {
+		    // This just makes sure that the href="#" attached to the <a> elements
+		    // don't scroll you back up the page.
+		    Y.one('body').delegate('click', function (e) {
+		        e.preventDefault();
+		    }, 'a[href="#"]');
+		});
+	</script>
+	<!-- Script to render calendar, lifted from http://yuilibrary.com/yui/docs/calendar/calendar-simple.html  -->
+	<script type="text/javascript">
+	YUI().use('calendar', 'datatype-date', 'cssbutton',  function(Y) {
+
+	    // Create a new instance of calendar, placing it in 
+	    // #mycalendar container, setting its width to 133px,
+	    // the flags for showing previous and next month's 
+	    // dates in available empty cells to true, and setting 
+	    // the date to today's date.          
+	    var calendar = new Y.Calendar({
+	      contentBox: "#mycalendar",
+	      width:'133px',
+	      showPrevMonth: true,
+	      showNextMonth: true,
+	      date: new Date()}).render();
+
+	    // Get a reference to Y.DataType.Date
+	    var dtdate = Y.DataType.Date;
+
+	    // Listen to calendar's selectionChange event.
+	    calendar.on("selectionChange", function (ev) {
+
+	      // Get the date from the list of selected
+	      // dates returned with the event (since only
+	      // single selection is enabled by default,
+	      // we expect there to be only one date)
+	      var newDate = ev.newSelection[0];
+
+	      // Format the date and output it to a DOM
+	      // element.
+	      Y.one("#selecteddate").setHTML(dtdate.format(newDate));
+	    });
+
+
+	    // When the 'Show Previous Month' link is clicked,
+	    // modify the showPrevMonth property to show or hide
+	    // previous month's dates
+	    Y.one("#togglePrevMonth").on('click', function (ev) {
+	      ev.preventDefault();
+	      calendar.set('showPrevMonth', !(calendar.get("showPrevMonth")));      
+	    });
+
+	    // When the 'Show Next Month' link is clicked,
+	    // modify the showNextMonth property to show or hide
+	    // next month's dates
+	    Y.one("#toggleNextMonth").on('click', function (ev) {
+	      ev.preventDefault();
+	      calendar.set('showNextMonth', !(calendar.get("showNextMonth")));      
+	    });
+	});
+	</script>
+	
+	<!-- event_history_graph, current_event and supporting libraries -->
+		<!-- YUI seed script -->
+		<script src="http://yui.yahooapis.com/3.14.1/build/yui/yui.js" type="text/javascript"></script>
+		<!-- app loader configuration script -->
+		<script src="/javascripts/yui_config.js" type="text/javascript"></script>
+
+
+	<script>
+		// load d3 and jquery and yql
+		YUI().use('d3', 'jquery-ui', 'yql', function (Y) {
+			// bar graph for carlgraph
+			
+			// basice d3
+			//Width and height
+			var w = 300;
+			var h = 125;
+
+			var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+
+			var xScale = d3.scale.ordinal()
+							.domain(d3.range(dataset.length))
+							.rangeRoundBands([0, w], 0.05);
+
+			var yScale = d3.scale.linear()
+							.domain([0, d3.max(dataset)])
+							.range([0, h]);
+
+			//Create SVG element
+			var svg = d3.select("#carlgraph")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+
+			//Create bars
+			svg.selectAll("rect")
+			   .data(dataset)
+			   .enter()
+			   .append("rect")
+			   .attr("x", function(d, i) {
+			   		return xScale(i);
+			   })
+			   .attr("y", function(d) {
+			   		return h - yScale(d);
+			   })
+			   .attr("width", xScale.rangeBand())
+			   .attr("height", function(d) {
+			   		return yScale(d);
+			   })
+			   .attr("fill", function(d) {
+					return "rgb(0, 0, " + (d * 10) + ")";
+			   })
+			   .on("mouseover", function(d) {
+
+					//Get this bar's x/y values, then augment for the tooltip
+					var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.rangeBand() / 2;
+					var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + h / 2;
+
+					//Update the tooltip position and value
+					d3.select("#tooltip")
+						.style("left", xPosition + "px")
+						.style("top", yPosition + "px")						
+						.select("#value")
+						.text(d);
+   
+					//Show the tooltip
+					d3.select("#tooltip").classed("hidden", false);
+
+			   })
+			   .on("mouseout", function() {
+   
+					//Hide the tooltip
+					d3.select("#tooltip").classed("hidden", true);
+		
+			   })
+			   .on("click", function() {
+			   		sortBars();
+			   });
+
+			//Define sort order flag
+			var sortOrder = false;
+
+			//Define sort function
+			var sortBars = function() {
+
+				//Flip value of sortOrder
+			   	sortOrder = !sortOrder;
+
+				svg.selectAll("rect")
+				   .sort(function(a, b) {
+				   		if (sortOrder) {
+					   		return d3.ascending(a, b);
+				   		} else {
+					   		return d3.descending(a, b);
+				   		}
+				   	})
+				   .transition()
+				   .delay(function(d, i) {
+					   return i * 50;
+				   })
+				   .duration(1000)
+				   .attr("x", function(d, i) {
+				   		return xScale(i);
+				   });
+
+			};			
+			
+			
+			
+			
+		});
+
+
+	</script>
+	
+	<script>
+	YUI().use('d3', 'yql', 'node-base', function (Y) {
+	    var query = 'select * from yahoo.finance.historicaldata where symbol = "AMZN" and startDate = "2012-01-01" and endDate = "2012-01-12"';
+    
+	    Y.YQL(query, function (response) {
+	    });
+
+		// event_history_graph candlestick graph
+		var width = 405;
+		var height = 240;
+       	String.prototype.format = function() {
+        	var formatted = this;
+        	for (var i = 0; i < arguments.length; i++) {
+				var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+				formatted = formatted.replace(regexp, arguments[i]);
+			}
+			return formatted;
+      	};
+		
+		var dateFormat = d3.time.format("%Y-%m-%d");
+		var end = new Date();
+		var start = new Date(end.getTime() - 1000 * 60 * 60 * 24 * 60);
+      	var data = [];
+		
+      	function min(a, b){ return a < b ? a : b ; }
+ 		     
+      	function max(a, b){ return a > b ? a : b; }    
+		
+      function buildChart(data){        
+
+          var margin = 50;		   
+
+	  var chart = d3.select("#event_history_graph")
+		  .append("svg:svg")
+		  .attr("class", "chart")
+		  .attr("width", width)
+		  .attr("height", height);
+	  var y = d3.scale.linear()
+		  .domain([d3.min(data.map(function(x) {return x["Low"];})), d3.max(data.map(function(x){return x["High"];}))])
+		  .range([height-margin, margin]);
+	  var x = d3.scale.linear()
+		  .domain([d3.min(data.map(function(d){return dateFormat.parse(d.Date).getTime();})),
+		  	   d3.max(data.map(function(d){return dateFormat.parse(d.Date).getTime();}))])
+		  .range([margin,width-margin]);
+
+          chart.selectAll("line.x")
+           .data(x.ticks(10))
+           .enter().append("svg:line")
+           .attr("class", "x")
+           .attr("x1", x)
+           .attr("x2", x)
+           .attr("y1", margin)
+           .attr("y2", height - margin)
+           .attr("stroke", "#ccc");
+
+          chart.selectAll("line.y")
+           .data(y.ticks(10))
+           .enter().append("svg:line")
+           .attr("class", "y")
+           .attr("x1", margin)
+           .attr("x2", width - margin)
+           .attr("y1", y)
+           .attr("y2", y)
+           .attr("stroke", "#ccc");
+
+          chart.selectAll("text.xrule")
+           .data(x.ticks(10))
+           .enter().append("svg:text")
+           .attr("class", "xrule")
+           .attr("x", x)
+           .attr("y", height - margin)
+           .attr("dy", 20)
+           .attr("text-anchor", "middle")
+           .text(function(d){ var date = new Date(d * 1000);  return (date.getMonth() + 1)+"/"+date.getDate(); });
+
+         chart.selectAll("text.yrule")
+          .data(y.ticks(10))
+          .enter().append("svg:text")
+          .attr("class", "yrule")
+          .attr("x", width - margin)
+          .attr("y", y)
+          .attr("dy", 0)
+          .attr("dx", 20)		 
+          .attr("text-anchor", "middle")
+          .text(String);
+
+	chart.selectAll("rect")
+	  .data(data)
+	  .enter().append("svg:rect")
+	  .attr("x", function(d) { return x(dateFormat.parse(d.Date).getTime()); })
+          .attr("y", function(d) {return y(max(d.Open, d.Close));})		  
+	  .attr("height", function(d) { return y(min(d.Open, d.Close))-y(max(d.Open, d.Close));})
+	  .attr("width", function(d) { return 0.5 * (width - 2*margin)/data.length; })
+          .attr("fill",function(d) { return d.Open > d.Close ? "red" : "green" ;});
+
+        chart.selectAll("line.stem")
+          .data(data)
+          .enter().append("svg:line")
+          .attr("class", "stem")
+          .attr("x1", function(d) { return x(dateFormat.parse(d.Date).getTime()) + 0.25 * (width - 2 * margin)/ data.length;})
+          .attr("x2", function(d) { return x(dateFormat.parse(d.Date).getTime()) + 0.25 * (width - 2 * margin)/ data.length;})		    
+          .attr("y1", function(d) { return y(d.High);})
+          .attr("y2", function(d) { return y(d.Low); })
+          .attr("stroke", function(d){ return d.Open > d.Close ? "red" : "green"; })
+
+      }
+		
+	    Y.YQL(query, function (response) {
+	        results = response.query.results.quote;
+
+	        for(var i=0;i<results.length;i++){
+	          results[i].timestamp = (new Date(results[i].date).getTime() / 1000);
+	        }		  
+	        results = results.sort(function(x, y){ return dateFormat.parse(x.Date).getTime() - dateFormat.parse(y.Date).getTime(); });
+	        buildChart(results);		  
+
+	    });
+		
+	});
+	</script>
+</body>
+</body>
+</html>
